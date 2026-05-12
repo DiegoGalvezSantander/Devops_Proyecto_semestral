@@ -2,12 +2,13 @@ name: cicd_backends
 
 
 on:
- push:
-  branches: [ "deploy" ] 
+  push:
+    branches: [ "deploy" ] 
+    
+    paths:
+    - "Springboot-API-REST/**"
+    - "Springboot-API-REST-DESPACHO/**"
   workflow_dispatch:
-  paths:
-   - "Springboot-API-REST/**"
-   - "Springboot-API-REST-DESPACHO/**"
 
 
 jobs:

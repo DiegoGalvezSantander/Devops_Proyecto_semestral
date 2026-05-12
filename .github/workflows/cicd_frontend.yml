@@ -1,11 +1,11 @@
 name: cicd_frontend
 
 on:
- push:
-  branches: [ "deploy" ] 
-  
-  paths:
-   - "front_despacho/**" 
+  push:
+    branches: [ "deploy" ] 
+    
+    paths:
+    - "front_despacho/**" 
 
   workflow_dispatch:
 
