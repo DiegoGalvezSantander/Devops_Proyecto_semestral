@@ -9,10 +9,10 @@ jobs:
   build-push-deploy-backend:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar AWS
+      - name: AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -20,18 +20,17 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      - name: Login ECR
+      - name: ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build y Push Imagen (IE1)
+      - name: Build
         run: |
-          # Asegúrate que el nombre de la carpeta coincida con tu repo
           cd back-Despachos_SpringBoot
           docker build -t innovatech-backend .
           docker tag innovatech-backend:latest ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
           docker push ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
 
-      - name: Despliegue SSM en Instancia Privada (IE4)
+      - name: SSM
         run: |
           aws ssm send-command \
             --instance-ids "${{ secrets.EC2_BACKEND_INSTANCE_ID }}" \
