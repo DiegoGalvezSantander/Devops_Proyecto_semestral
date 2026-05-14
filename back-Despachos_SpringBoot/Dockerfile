@@ -1,16 +1,19 @@
-# Etapa 1: Construcción
+# Etapa 1: Construcción (Build)
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
-# NOTA: Cambiamos la ruta para que busque dentro de la carpeta anidada
+# Entramos a la carpeta interna donde está el pom.xml y el código
 COPY Springboot-API-REST-DESPACHO/pom.xml .
 COPY Springboot-API-REST-DESPACHO/src ./src
 
+# Compilamos el proyecto
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Ejecución
+# Etapa 2: Ejecución (Runtime)
 FROM amazoncorretto:17-alpine
 WORKDIR /app
+
+# Copiamos el .jar generado en la etapa anterior
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
