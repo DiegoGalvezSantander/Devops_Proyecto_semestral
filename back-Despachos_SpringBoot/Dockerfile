@@ -15,6 +15,7 @@ WORKDIR /app
 
 # Copiamos el .jar generado en la etapa anterior
 COPY --from=build /app/target/*.jar app.jar
-
+RUN addgroup -S despachos-group && adduser -S despachos-user -G despachos-group
+USER despachos-user
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
