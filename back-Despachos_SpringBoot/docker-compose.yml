@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Microservicio de Despachos (IE6)
+  back-despachos:
+    build:
+      context: .
+      dockerfile: back-Despachos_SpringBoot/Dockerfile
+    container_name: back-despachos
+    networks:
+      - innovatech-private-net
+    volumes:
+      - despachos_data:/app/data
+    restart: always
+
+  # Microservicio de Ventas (IE6)
+  back-ventas:
+    build:
+      context: .
+      dockerfile: back-Ventas_SpringBoot/Dockerfile
+    container_name: back-ventas
+    networks:
+      - innovatech-private-net
+    volumes:
+      - ventas_data:/app/data
+    restart: always
+
+  # Frontend (IE5)
+  frontend:
+    build:
+      context: .
+      dockerfile: front_despacho/Dockerfile
+    container_name: front-innovatech
+    ports:
+      - "80:80"
+    networks:
+      - innovatech-public-net
+      - innovatech-private-net
+    depends_on:
+      - back-despachos
+      - back-ventas
+    restart: always
+
+# Redes para cumplir con el aislamiento (IE7)
+networks:
+  innovatech-public-net:
+    driver: bridge
+  innovatech-private-net:
+    driver: bridge
+
+# Volúmenes para Persistencia (IE3)
+volumes:
+  despachos_data:
+  ventas_data:
