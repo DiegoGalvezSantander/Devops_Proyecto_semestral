@@ -5,10 +5,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-
-# Etapa 2: Servidor liviano (Nginx)
+# Etapa 2: Servidor Nginx
 FROM nginx:alpine
-# Copiamos el resultado de Vite a la carpeta de Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
